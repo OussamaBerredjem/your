@@ -6,25 +6,54 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(45deg, #ff6b6b, #ff8e8e, #f39ade, #ec9393);
-        background-size: 400% 400%;
-        overflow: hidden;
-        font-family: 'Pacifico', cursive;
-        animation: gradientAnimation 6s ease infinite;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(45deg, #ff6b6b, #ff8e8e, #f39ade, #ec9393);
+      background-size: 400% 400%;
+      font-family: 'Pacifico', cursive;
+      animation: gradientAnimation 6s ease infinite;
+      overflow: hidden;
     }
 
     @keyframes gradientAnimation {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-    .container { 
+
+    .fullscreen-dialog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .play-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px 40px;
+      font-size: 2em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .play-button:hover {
+      transform: scale(1.05);
+    }
+    
+     .container { 
       text-align: center; 
       position: relative; 
       z-index: 2; 
@@ -143,7 +172,19 @@
   </style>
 </head>
 <body>
-  <div class="container">
+
+<div class="fullscreen-dialog" id="startDialog">
+  <button class="play-button" id="playBtn">
+    <i class="fa fa-play"></i> Play
+  </button>
+</div>
+
+<audio id="audio-1">
+  <source src="https://web.opendrive.com/api/v1/download/file.json/NjdfNDAwODk1MTZfWm1WSW0?inline=1" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<div class="container">
     <h1 class="title">Sahoma <i class="fa-solid fa-heart heart"></i></h1>
     <div class="lyrics-container" id="lyrics"></div>
   </div>
@@ -158,16 +199,31 @@
     </div>
   </div>
 
-  <audio id="audio-1" autoplay>
-    <source src="https://web.opendrive.com/api/v1/download/file.json/NjdfNDAwODk1MTZfWm1WSW0?inline=1" type="audio/mpeg">
+  <audio id="audio-1">
+    <source src="./song.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
 
-  <script>
-    // Lyrics & audio sync code
-    const lyricsContainer = document.getElementById('lyrics');
-    const audio = document.getElementById('audio-1');
+<script>
+  const audio = document.getElementById('audio-1');
+  const startDialog = document.getElementById('startDialog');
+  const playBtn = document.getElementById('playBtn');
 
+  playBtn.onclick = async () => {
+    try {
+      await audio.play();
+      startDialog.style.display = 'none';
+    } catch (error) {
+      console.error('Playback failed:', error);
+    }
+  };
+  
+   const lyricsContainer = document.getElementById('lyrics');
+    
+
+    
+
+    
     const lyricsData = {
       "scripts": [
           {"start": 6.61,  "text": "You're so hypnotizing"},
@@ -244,6 +300,7 @@
       const flyingPaper = document.getElementById('flyingPaper');
       flyingPaper.classList.add('fly');
     }, 20000);
-  </script>
+</script>
+
 </body>
 </html>
