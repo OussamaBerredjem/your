@@ -211,6 +211,8 @@
 
   let autoPlayStarted = false;
   let autoPlayTimeout;
+     const other - "https://web.opendrive.com/api/v1/download/file.json/NjdfNDAwODk2MDhfZVBPdDc?inline=1";
+
 
   playBtn.onclick = async () => {
     try {
@@ -219,6 +221,17 @@
        setTimeout(() => {
       const flyingPaper = document.getElementById('flyingPaper');
       flyingPaper.classList.add('fly');
+              const newSource = document.createElement('source');
+        newSource.src = other;
+        newSource.type = 'audio/mpeg';
+
+        // Replace the old source with the new one
+        audio.innerHTML = '';
+        audio.appendChild(newSource);
+
+        // Play the new song after switching the source
+        audio.load();
+        audio.play();
     }, 20000);
     } catch (error) {
       console.error('Playback failed:', error);
