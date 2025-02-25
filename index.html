@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sahoma Music Experience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(45deg, #ff6b6b, #ff8e8e, #f39ade, #ec9393);
+        background-size: 400% 400%;
+        overflow: hidden;
+        font-family: 'Pacifico', cursive;
+        animation: gradientAnimation 6s ease infinite;
+    }
+
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    .container { 
+      text-align: center; 
+      position: relative; 
+      z-index: 2; 
+    }
+    .title {
+        font-size: 5em;
+        color: white;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        animation: pulse 2s infinite;
+        margin-bottom:5cm;
+    }
+    .heart {
+        animation: heartbeat 1.2s infinite;
+        display: inline-block;
+        height: 70px;
+        width: 70px;
+        color: #ff6b6b;
+        margin-bottom: 30px;
+    }
+    .lyrics-container {
+        font-family: 'Roboto Slab', serif;
+        font-size: 2em;
+        color: white;
+        text-align: center;
+        max-height: 30vh;
+        overflow-y: auto;
+        padding: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        scroll-behavior: smooth;
+    }
+    .lyric-line {
+        margin: 15px 0;
+        opacity: 0.7;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+    .lyric-line.active {
+        opacity: 1;
+        transform: scale(1.1);
+        color: #ffeb3b;
+    }
+    @keyframes heartbeat {
+        0% { transform: scale(1); }
+        15% { transform: scale(1.3); }
+        30% { transform: scale(1); }
+        45% { transform: scale(1.15); }
+        60% { transform: scale(1); }
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    /* New CSS for the flying paper effect */
+    .flying-paper {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        /* Start off-screen above */
+        transform: translate(-50%, -150vh);
+        background: white;
+        padding: 20px 30px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        display: none;
+        text-align: center;
+        z-index: 999;
+    }
+    .flying-paper i {
+        display: block;
+        font-size: 40px;
+        color: #ff6b6b;
+        margin-bottom: 10px;
+    }
+    .flying-paper p {
+        margin: 0;
+        font-family: 'Pacifico', cursive;
+        font-size: 1.5em;
+        color: #333;
+    }
+    /* When the 'fly' class is added, start the animation */
+    .flying-paper.fly {
+        display: block;
+        animation: flyIn 2s ease-out forwards, float 3s ease-in-out infinite 2s;
+
+    }
+    @keyframes flyIn {
+        0% {
+            transform: translate(-50%, -150vh) rotate(20deg);
+            opacity: 0;
+        }
+        60% {
+            transform: translate(-50%, -50%) rotate(-5deg);
+            opacity: 1;
+        }
+        80% {
+            transform: translate(-50%, -50%) rotate(3deg);
+        }
+        100% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+    }
+    @keyframes float {
+      0% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-20px); }
+      100% { transform: translate(-50%, -50%) translateY(0); }
+    }
+
+    .rig{
+        display: flex;
+        justify-content: right;
+        align-items: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Sahoma <i class="fa-solid fa-heart heart"></i></h1>
+    <div class="lyrics-container" id="lyrics"></div>
+  </div>
+
+  <!-- Flying paper element (initially hidden) -->
+  <div id="flyingPaper" class="flying-paper">
+    <i class="fa-solid fa-heart heart"></i>
+    <p>I know you see this, and I hope it makes you smile because your happiness means everything to me. I love you so much, baby. your smile lights up my world, and every time I see it, I fall in love with you all over again. You are the most amazing person, the one who truly understands me, ya Omryy enty , ya Rouhi,nhbk khlah khlah</p>
+    <div class="rig">
+        <i class="fa-solid fa-heart heart"></i>
+
+    </div>
+  </div>
+
+  <audio id="audio-1" src="./song.mp3" autoplay></audio>
+
+  <script>
+    // Lyrics & audio sync code
+    const lyricsContainer = document.getElementById('lyrics');
+    const audio = document.getElementById('audio-1');
+
+    const lyricsData = {
+      "scripts": [
+          {"start": 6.61,  "text": "You're so hypnotizing"},
+          {"start": 9.65,  "text": "Could you be the devil?"},
+          {"start": 11.68, "text": "Could you be an angel?"},
+          {"start": 13.5, "text": "Your touch magnetizing"},
+          {"start": 15.7, "text": "Feels like I am floating"},
+          {"start": 17.85, "text": "Leaves my body glowing"},
+          {"start": 19.69, "text": "They say be afraid"},
+          {"start": 22, "text": "You're not like the others"},
+          {"start": 23.46, "text": "Futuristic lover"},
+          {"start": 26.47, "text": "Different DNA"},
+          {"start": 29.95, "text": "They don't understand you"},
+          {"start": 33, "text": "You're from a whole 'nother world"},
+          {"start": 36,  "text": "A different dimension"},
+          {"start": 37.37, "text": "You open my eyes"},
+          {"start": 38.93, "text": "And I'm ready to go"},
+          {"start": 42,    "text": "Lead me into the light"},
+          {"start": 43.87, "text": "Kiss me, ki-ki-kiss me"},
+          {"start": 45.35, "text": "Infect me with your loving"},
+          {"start": 47.22, "text": "Fill me with your poison"},
+          {"start": 49.1,  "text": "Take me, ta-ta-take me"},
+          {"start": 50.65, "text": "Wanna be your victim"},
+          {"start": 53.61, "text": "Ready for abduction"},
+          {"start": 55.87, "text": "Boy, you're an alien"},
+          {"start": 59.71, "text": "Your touch so foreign"},
+          {"start": 62.76, "text": "It's supernatural"},
+          {"start": 66.09, "text": "Extraterrestrial"}
+      ]
+    };
+
+    // Populate lyrics container
+    lyricsData.scripts.forEach(line => {
+      const lyricLine = document.createElement('div');
+      lyricLine.classList.add('lyric-line');
+      lyricLine.textContent = line.text;
+      lyricsContainer.appendChild(lyricLine);
+    });
+
+    const lyricLines = document.querySelectorAll('.lyric-line');
+    let currentGroup = 0;
+
+    audio.addEventListener('timeupdate', () => {
+      const currentTime = audio.currentTime;
+      let currentLineIndex = -1;
+
+      lyricsData.scripts.forEach((line, index) => {
+          if (currentTime >= line.start) currentLineIndex = index;
+      });
+
+      lyricLines.forEach((line, index) => {
+          line.classList.toggle('active', index === currentLineIndex);
+      });
+
+      // Scroll groups of 4 lines
+      if (currentLineIndex >= 0) {
+          const groupSize = 4;
+          const newGroup = Math.floor(currentLineIndex / groupSize);
+          if (newGroup !== currentGroup) {
+              currentGroup = newGroup;
+              const scrollToIndex = currentGroup * groupSize;
+              if (lyricLines[scrollToIndex]) {
+                  lyricLines[scrollToIndex].scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'center'
+                  });
+              }
+          }
+      }
+    });
+
+    // New JavaScript to trigger the flying paper after a 30s delay
+    setTimeout(() => {
+      const flyingPaper = document.getElementById('flyingPaper');
+      flyingPaper.classList.add('fly');
+    }, 20000);
+  </script>
+</body>
+</html>
